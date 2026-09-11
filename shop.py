@@ -14,3 +14,22 @@ class Customer:
 
     def summary(self):
         return f"[{self.grade}] {self.name} (포인트: {self.points})"
+
+class Order:
+    def __init__(self, order_id, customer, items):
+        self.order_id = order_id
+        self.customer = customer
+        self.items = items
+
+    def total_price(self):
+        subtotal = sum(price for _, price in self.items)
+        discount = self.customer.get_discount_rate()
+        return int(subtotal * (1 - discount))
+
+    def add_item(self, name, price):
+        self.items.append((name, price))
+
+    def pay(self):
+        amount = self.total_price()
+        self.customer.add_points(amount)
+        return amount
